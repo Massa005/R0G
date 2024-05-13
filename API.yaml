@@ -1,0 +1,202 @@
+swagger: '2.0'
+info:
+  title: Example REST API
+  description: API for managing user and game data.
+  version: "1.0.0"
+host: 'your-api-host.com'
+basePath: '/path-to-api'
+schemes:
+  - http
+paths:
+  /addUtenteAPI.php:
+    post:
+      summary: Add a new user
+      description: Adds a new user to the system.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          description: User to add
+          required: true
+          schema:
+            type: object
+            required:
+              - e_mail
+              - password
+              - nome
+              - cognome
+              - data_nascita
+              - data_account
+            properties:
+              e_mail:
+                type: string
+              password:
+                type: string
+              nome:
+                type: string
+              cognome:
+                type: string
+              data_nascita:
+                type: string
+                format: date
+              data_account:
+                type: string
+                format: date
+      responses:
+        200:
+          description: User added successfully
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: 'User was created.'
+        400:
+          description: Missing data
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: 'Unable to create user. Data is incomplete.'
+  /searchGame:
+    get:
+      summary: Search for a game by name
+      description: Returns game details for a specified game name.
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: nome
+          type: string
+          required: true
+          description: Name of the game to search for.
+      responses:
+        200:
+          description: An array of games that match the search criteria
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Game'
+  /utenteAPI/readAll:
+    get:
+      summary: Read all users
+      description: Returns a list of all users.
+      produces:
+        - application/json
+      responses:
+        200:
+          description: An array of all users
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+  /utenteAPI/readOne:
+    get:
+      summary: Read specific user details
+      description: Fetches details for a specific user by email.
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: e_mail
+          type: string
+          required: true
+          description: Email of the user to fetch details for.
+      responses:
+        200:
+          description: Detailed information about the user
+          schema:
+            type: object
+definitions:
+  Game:
+    type: object
+    properties:
+      id:
+        type: string
+      nome:
+        type: string
+      descrizione:
+        type: string
+      prezzo:
+        type: number
+      sconto:
+        type: number
+      mail_editore:
+        type: string
+      main_img:
+        type: string
+      valutazione:
+        type: number
+      data_pubblicazione:
+        type: string
+        format: date
+  User:
+    type: object
+    properties:
+      e_mail:
+        type: string
+      nome:
+        type: string
+      cognome:
+        type: string
+      data_nascita:
+        type: string
+        format: date
+      data_account:
+        type: string
+        format: date
+  /searchGame:
+    get:
+      summary: Search for a game by name
+      description: Returns game details for a specified game name.
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: nome
+          type: string
+          required: true
+          description: Name of the game to search for.
+      responses:
+        200:
+          description: An array of games that match the search criteria
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Game'
+  /utenteAPI/readAll:
+    get:
+      summary: Read all users
+      description: Returns a list of all users.
+      produces:
+        - application/json
+      responses:
+        200:
+          description: An array of all users
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+  /utenteAPI/readOne:
+    get:
+      summary: Read specific user details
+      description: Fetches details for a specific user by email.
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: e_mail
+          type: string
+          required: true
+          description: Email of the user to fetch details for.
+      responses:
+        200:
+          description: Detailed information about the user
+          schema:
+            type: object
+            properties:
+              $ref: '#/definitions/User'
